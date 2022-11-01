@@ -1,8 +1,10 @@
 /* Please see State.h for documentation */
 
-#include "Command.h"
+#include "Lever.h"
 #include "State.h"
 #include <Arduino.h>
+
+
 
 
 State::State() {
@@ -16,37 +18,36 @@ unsigned int State::getNIncrementTick() {
   return ++tick;
 }
 
-Command* State::leftRearLightOn() {
-   if(commandStorageArray[11] != NULL) return commandStorageArray[11];
+Lever* State::leftRearLight() {
+//   if(LeverNparamsArray[11] != NULL) return LeverStorageArray[11];
    uint64_t bit12 = BIT12;
    uint64_t bit9 = BIT9;
-   Command* command = new Command(getNIncrementTick(), &bit12, &bit9, NULL, intParam, strParam); 
-   commandExecutionArray[commandIndex] = command;
-   commandStorageArray[11] = command;
-   return command;
+   Lever* lever = new Lever(getNIncrementTick(), &bit12, &bit9, NULL, intParam, strParam); 
+   leverExecutionArray[leverIndex] = lever;
+   return lever;
 };
 
 void State::execute() {
-  if(commandIndex > COMMAND_INDEX_SQUIZZ_THRESHOLD) {
-    commandIndex = squizz();
+  if(leverIndex > Lever_INDEX_SQUIZZ_THRESHOLD) {
+    leverIndex = squizz();
   }
-  for(int i=0; i<commandIndex; i++) {
-    Command* command = commandExecutionArray[i];
-    if(command->isCommited()) {
-      command->execute();
-    } else if(command->isComplete()) {
+  for(int i=0; i<leverIndex; i++) {
+    Lever* lever = leverExecutionArray[i];
+    if(lever->isCommited()) {
+      lever->execute();
+    } else if(lever->isComplete()) {
       
     }
   }
 }
 
 int State::squizz() {
-  Command newcommandExecutionArray[64];
+  Lever newLeverExecutionArray[64];
   int newIndex=0;
-  for(int i=0; i<commandIndex; i++) {
-    Command* command = commandExecutionArray[i];
-    if(!command->isComplete()) {
-       commandExecutionArray[newIndex] = commandExecutionArray[i];
+  for(int i=0; i<leverIndex; i++) {
+    Lever* lever = leverExecutionArray[i];
+    if(!lever->isComplete()) {
+       leverExecutionArray[newIndex] = leverExecutionArray[i];
        newIndex++;
     }
   }  

@@ -4,10 +4,10 @@
 #include <Arduino.h>
 #include "UsefulDefines.h"
 
-/* Very generic Command that is tied up to a parental State through its constructor. 
+/* Very generic Lever that is tied up to a parental State through its constructor. 
    You have to make a super class that will bring more meaning to very generic
    getters and setters */
-class Command {
+class Lever {
   private:
 
     uint64_t* deviceMask;
@@ -19,7 +19,7 @@ class Command {
     
     unsigned int tick;
     int intBufArrayIndex = 0;
-    int intParamArrayBuffer[5]; // Using this buffers before commit(millis) command issued
+    int intParamArrayBuffer[5]; // Using this buffers before commit(millis) Lever issued
     int strBufArrayIndex = 0 ;
     String strParamArrayBuffer[3];
     
@@ -36,8 +36,8 @@ class Command {
     bool   addStrParam(String value); // Can contain upto three elements and after that it'll start returning false
 
   public:  
-    Command();
-    Command(unsigned int tick, 
+    Lever();
+    Lever(unsigned int tick, 
             uint64_t* deviceMask,
             uint64_t* intParamMask,
             uint64_t* strParamMask,
@@ -47,16 +47,16 @@ class Command {
     bool isCommited();
     bool isComplete();
      
-    unsigned int getTick(); // Tick gets assigned immediatelly after command got generated and it stays the same throughout the commit 
-    void commit(unsigned int expiresInMillis); // Execute command now
-    void cancel(); // remove command from queue and delete it from memory
+    unsigned int getTick(); // Tick gets assigned immediatelly after Lever got generated and it stays the same throughout the commit 
+    void commit(unsigned int expiresInMillis); // Execute Lever now
+    void cancel(); // remove Lever from queue and delete it from memory
     void execute(); // being constantly called in a loop from the State
 
 };
 
-class LeftRearLightSteadyOn : Command {
+class LeftRearLight : Lever {
   
-}
+};
 
 
 #endif

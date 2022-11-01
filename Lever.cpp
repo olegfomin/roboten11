@@ -1,11 +1,11 @@
-#include "Command.h" 
+#include "Lever.h" 
 
-// Redundant constructor but without this method the Command cmd[64] array is imposible to form 
-Command::Command() {
+// Redundant constructor but without this method the Lever cmd[64] array is imposible to form 
+Lever::Lever() {
 };
 
 
-Command::Command(unsigned int tick, 
+Lever::Lever(unsigned int tick, 
                  uint64_t* deviceMask, 
                  uint64_t* intParamMask,
                  uint64_t* strParamMask,
@@ -19,27 +19,27 @@ Command::Command(unsigned int tick,
   this->strParamArray = strParamArray;
 }
 
-int    Command::getIntParam(int index) { // index must be zero or a positive number but less than 5
+int    Lever::getIntParam(int index) { // index must be zero or a positive number but less than 5
   return intParamArrayBuffer[index];
 }; 
-String Command::getStrParam(int index){ // index must be a zero or positive number but less than 3
+String Lever::getStrParam(int index){ // index must be a zero or positive number but less than 3
   return strParamArrayBuffer[index];
   intBufArrayIndex = intParamArrayBuffer[index];
 }; 
-bool Command::addIntParam(int value) { //index must be a zero or positive number but less than 5
+bool Lever::addIntParam(int value) { //index must be a zero or positive number but less than 5
    if(intBufArrayIndex > 4) return false; 
    intParamArrayBuffer[intBufArrayIndex] = value ;              
    intBufArrayIndex++;
    return true;
 }; 
-bool Command::addStrParam(String value){ // index must be a positive number but less than 3
+bool Lever::addStrParam(String value){ // index must be a positive number but less than 3
    if(strBufArrayIndex > 2) return false; 
    strParamArrayBuffer[strBufArrayIndex] = value;
    strBufArrayIndex++;
    return true;
 }; 
 
-void Command::commit(unsigned int expiresInMillis) {
+void Lever::commit(unsigned int expiresInMillis) {
 /*  for(int i=0; i<intBufArrayIndex, i++) {
     
     
@@ -48,14 +48,14 @@ void Command::commit(unsigned int expiresInMillis) {
   isCommitedFlag = true;
 }
 
-bool Command::isCommited() {
+bool Lever::isCommited() {
   return isCommitedFlag & !isCompleteFlag;
 }
 
-bool Command::isComplete() {
+bool Lever::isComplete() {
   return isCompleteFlag;
 }
 
-void Command::execute() {
+void Lever::execute() {
   iterationNumber++;
 }
