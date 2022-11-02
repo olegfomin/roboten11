@@ -4,15 +4,18 @@
 #include "State.h"
 #include <Arduino.h>
 
-
-
-
 State::State() {
+  leverNparamsArray[0] = new LeverNparams(
+
+};
+
+void State::arduinoSetup() {
   pinMode(LEFT_REAR_LED, OUTPUT);
   pinMode(RIGHT_REAR_LED, OUTPUT);
   pinMode(RIGHT_FRONT_LED, OUTPUT);
   pinMode(LEFT_FRONT_LED, OUTPUT); 
 };
+
 
 unsigned int State::getNIncrementTick() {
   return ++tick;
@@ -27,7 +30,7 @@ Lever* State::leftRearLight() {
    return lever;
 };
 
-void State::execute() {
+void State::arduinoLoop() {
   if(leverIndex > Lever_INDEX_SQUIZZ_THRESHOLD) {
     leverIndex = squizz();
   }
@@ -42,7 +45,6 @@ void State::execute() {
 }
 
 int State::squizz() {
-  Lever newLeverExecutionArray[64];
   int newIndex=0;
   for(int i=0; i<leverIndex; i++) {
     Lever* lever = leverExecutionArray[i];

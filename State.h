@@ -9,6 +9,7 @@
 
 using namespace std;
 
+/* The command handler and index where the parameters+length for this command are being held */
 class LeverNparams {
   private:
     Lever* lever; // Lever currently being executed
@@ -18,7 +19,10 @@ class LeverNparams {
     int length2StrParams; // length of params in the strParam array
 
   public:
-    LeverNparams(Lever* lever, int index2IntParams, int lengthOfIntParams, int index2StrParams, int index2StrParam, int lengthOfStrParams);
+    LeverNparams(Lever* lever, int index2IntParams, int lengthOfIntParams, int index2StrParams, int lengthOfStrParams);
+    LeverNparams(Lever* lever, int index2IntParams, int lengthOfIntParams);
+    LeverNparams(Lever* lever, int index2StrParams, int lengthOfStrParams);
+    
     int getIndex2IntParams();
     int getLength2IntParams();
     int getIndex2StrParams();
@@ -127,7 +131,7 @@ class State {
   private:
     static const int Lever_INDEX_SQUIZZ_THRESHOLD = 55;
     unsigned int tick = 0;
-    LeverNparams* LeverNparamsArray[64]= {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
+    LeverNparams* leverNparamsArray[64]= {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
                                               NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
     unsigned int    currentTick = 0;
     int             intParam[64] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -140,6 +144,7 @@ class State {
     
   public:
     State();
+    void   arduinoSetup();
     Lever* printOnLcd(); // strParam[0], strParam[2]
     bool isLeftMotorEngaged(); 
     Lever* leftMotorSpeed( ); // intParam[0]   
@@ -184,7 +189,7 @@ class State {
 
     Lever* print2OnRpiScreen(); // StrParam[3], StrParam[4], StrParam[5]
     
-    void execute(); // Should be called in the Arduino's loop body
+    void arduinoLoop(); // Should be called in the Arduino's loop body
     unsigned int getNIncrementTick();
     String toString();
 
