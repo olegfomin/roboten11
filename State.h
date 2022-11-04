@@ -21,7 +21,7 @@ class LeverNparams {
   public:
     LeverNparams(Lever* lever, int index2IntParams, int lengthOfIntParams, int index2StrParams, int lengthOfStrParams);
     LeverNparams(Lever* lever, int index2IntParams, int lengthOfIntParams);
-    LeverNparams(Lever* lever, int index2StrParams, int lengthOfStrParams);
+    LeverNparams(Lever* lever, String index2StrParams, int lengthOfStrParams);
     
     int getIndex2IntParams();
     int getLength2IntParams();
@@ -133,6 +133,7 @@ class State {
     unsigned int tick = 0;
     LeverNparams* leverNparamsArray[64]= {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
                                               NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+                                              
     unsigned int    currentTick = 0;
     int             intParam[64] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     String          strParam[5] = {"", "", "", "", ""}; 

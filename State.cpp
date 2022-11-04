@@ -5,7 +5,9 @@
 #include <Arduino.h>
 
 State::State() {
-  leverNparamsArray[0] = new LeverNparams(
+  
+//  leverNparamsArray[0] = new LeverNparams(Lever* lever, int index2IntParams, int lengthOfIntParams);
+  
 
 };
 
@@ -23,11 +25,11 @@ unsigned int State::getNIncrementTick() {
 
 Lever* State::leftRearLight() {
 //   if(LeverNparamsArray[11] != NULL) return LeverStorageArray[11];
-   uint64_t bit12 = BIT12;
+ /*  uint64_t bit12 = BIT12;
    uint64_t bit9 = BIT9;
    Lever* lever = new Lever(getNIncrementTick(), &bit12, &bit9, NULL, intParam, strParam); 
    leverExecutionArray[leverIndex] = lever;
-   return lever;
+   return lever; */
 };
 
 void State::arduinoLoop() {
@@ -37,7 +39,7 @@ void State::arduinoLoop() {
   for(int i=0; i<leverIndex; i++) {
     Lever* lever = leverExecutionArray[i];
     if(lever->isCommited()) {
-      lever->execute();
+      lever->arduinoLoop();
     } else if(lever->isComplete()) {
       
     }
