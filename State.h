@@ -34,7 +34,7 @@ class LeverNparams {
  *  otherwise it contains a LeverNparams class that point to the params starting point. 
  *  The array encoding looks like follows:
  0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 
-                                       | |||| |||| |||| |||| |||| |||| |||| ||||- 0. LCD 16x2 print strString[0], strString[1]
+                                       | |||| |||| |||| |||| |||| |||| |||| ||||- 0. Even bit (makes all the bits in a mask to come to the even number if 0010 001* then the bit would be zero if 0010 101* then the bit would be one)  
                                        | |||| |||| |||| |||| |||| |||| |||| |||-- 1. Left Motor go at intParam[0] speed. Negativa values reverse  
                                        | |||| |||| |||| |||| |||| |||| |||| ||--- 2. Right Motor go at intParam[1] speed. Negative value reverse 
                                        | |||| |||| |||| |||| |||| |||| |||| |---- 3. Apply emergency brake for all motors
@@ -46,7 +46,7 @@ class LeverNparams {
                                        | |||| |||| |||| |||| |||| ||||
                                        | |||| |||| |||| |||| |||| ||||----------  8. Reserved for Servo intParam[6]
                                        | |||| |||| |||| |||| |||| |||-----------  9. Resevred for Servo intParam[7]
-                                       | |||| |||| |||| |||| |||| ||------------  10. Resevred for Servo intParam[8]
+                                       | |||| |||| |||| |||| |||| ||------------  10. LCD 16x2 print strString[0], strString[1]
                                        | |||| |||| |||| |||| |||| |-------------  11. Current small screen menu position
                                        | |||| |||| |||| |||| ||||
                                        | |||| |||| |||| |||| ||||--------------- 12. Left Rear light ON (intParam1 - blinking mode see description below, int param2 - number of blinks remaining)
@@ -77,45 +77,45 @@ class LeverNparams {
  
  Another array contains the list of integer params with the encoding as follows: 
  0000 0000 0000 0000 0000 0000 0000 0000 
- |||| |||| |||| |||| |||| |||| |||| ||||- 0. Left motor speed value.Negativa values reverse 
- |||| |||| |||| |||| |||| |||| |||| |||-- 1. Right Motor speed value. Negativa values reverse  
- |||| |||| |||| |||| |||| |||| |||| ||--- 2. PAN Servo value; 
- |||| |||| |||| |||| |||| |||| |||| |---- 3. Tilt Servo value
+ |||| |||| |||| |||| |||| |||| |||| ||||- 0. Even bit 
+ |||| |||| |||| |||| |||| |||| |||| |||-- 1. Left motor speed value.Negativa values reverse  
+ |||| |||| |||| |||| |||| |||| |||| ||--- 2. Right Motor speed value. Negativa values reverse 
+ |||| |||| |||| |||| |||| |||| |||| |---- 3. PAN Servo value;
  |||| |||| |||| |||| |||| |||| 
- |||| |||| |||| |||| |||| |||| ||||------ 4. Servo 1 value
- |||| |||| |||| |||| |||| |||| |||------- 5. Servo 2 value
- |||| |||| |||| |||| |||| |||| ||-------- 6. Servo 3 value
- |||| |||| |||| |||| |||| |||| |--------  7. Servo 4 value
+ |||| |||| |||| |||| |||| |||| ||||------ 4. Tilt Servo value
+ |||| |||| |||| |||| |||| |||| |||------- 5. Servo 1 value
+ |||| |||| |||| |||| |||| |||| ||-------- 6. Servo 2 value
+ |||| |||| |||| |||| |||| |||| |--------  7. Servo 3 value
  |||| |||| |||| |||| |||| ||||
- |||| |||| |||| |||| |||| ||||----------  8. Number in the small LCD menu
- |||| |||| |||| |||| |||| |||-----------  9. Left Rear light Mode 0 - turn on ones; 1 - long blink; 2 - fast blink (pin 52, see below)
- |||| |||| |||| |||| |||| ||------------  10.Right Rear light Mode 0 - turn on ones; 1 - long blink; 2 - fast blink (pin 49, see below) 
- |||| |||| |||| |||| |||| |-------------  11.Right Front light Mode 0 - turn on ones; 1 - long blink; 2 - fast blink (pin 51, see below)
+ |||| |||| |||| |||| |||| ||||----------  8.  Servo 4 value
+ |||| |||| |||| |||| |||| |||-----------  9.  Number in the small LCD menu
+ |||| |||| |||| |||| |||| ||------------  10. Left Rear light how long to stay on (pin 52) 
+ |||| |||| |||| |||| |||| |-------------  11. Left Rear light how long to stay off (pin 52) 
  |||| |||| |||| |||| ||||
- |||| |||| |||| |||| ||||--------------- 12. Left Front light Mode 0 - turn on ones; 1 - long blink; 2 - fast blink (pin 50)
- |||| |||| |||| |||| |||---------------- 13. Left Front Sonar signal distance
- |||| |||| |||| |||| ||----------------- 14. Right Front Sonar Signal distance
- |||| |||| |||| |||| |------------------ 15. Sonar1 signal distance (reserved)
+ |||| |||| |||| |||| ||||--------------- 12. Right Rear right how long to stay on (pin 49)
+ |||| |||| |||| |||| |||---------------- 13. Right Rear right how long to stay off (pin 49)
+ |||| |||| |||| |||| ||----------------- 14. Right Front light Mode how long to stay on (pin 51)
+ |||| |||| |||| |||| |------------------ 15. Right Front light Mode how long to stay off (pin 51)
  |||| |||| |||| ||||
- |||| |||| |||| ||||-------------------- 16. Sonar2 signal distance (reserved)
- |||| |||| |||| |||--------------------- 17. Sonar3 signal distance (reserved)  
- |||| |||| |||| ||---------------------- 18. Sonar4 signal distance (reserved)
- |||| |||| |||| |----------------------- 19. Sonar5 signal distance (reserved)
+ |||| |||| |||| ||||-------------------- 16. Left Front light Mode how long to stay on (pin 50)  
+ |||| |||| |||| |||--------------------- 17. Left Front light Mode how long to stay off (pin 50)  
+ |||| |||| |||| ||---------------------- 18. 
+ |||| |||| |||| |----------------------- 19. 
  |||| |||| ||||
- |||| |||| ||||------------------------- 20. RPI relay supplies power to Raspberry Pi 
- |||| |||| |||-------------------------- 21. Self powered relay creates an alternative circuit to power Arduino
- |||| |||| ||--------------------------- 22. Motor power relay
- |||| |||| |---------------------------- 23. Speaker Power relay
+ |||| |||| ||||------------------------- 20. Left Front Sonar signal distance 
+ |||| |||| |||-------------------------- 21. Central Front Sonar signal distance
+ |||| |||| ||--------------------------- 22. Right Front Sonar Signal distance
+ |||| |||| |---------------------------- 23. RPI relay supplies power to Raspberry Pi
  |||| ||||
- |||| ||||------------------------------ 24. Relay 5 (reserved)
- |||| |||------------------------------- 25, Left rear wheel counter
- |||| ||-------------------------------- 26. Right rear wheel counter
- |||| |--------------------------------- 27. Front right wheel counter
+ |||| ||||------------------------------ 24. Self powered relay creates an alternative circuit to power Arduino
+ |||| |||------------------------------- 25, Motor power relay
+ |||| ||-------------------------------- 26. Speaker Power relay
+ |||| |--------------------------------- 27. Relay 5 (reserved)
  ||||
- ||||----------------------------------- 28. Front left wheel counter
- |||------------------------------------ 29. 
- ||------------------------------------- 30. 
- |-------------------------------------- 31. 
+ ||||----------------------------------- 28. Left rear wheel counter
+ |||------------------------------------ 29. Right rear wheel counter
+ ||------------------------------------- 30. Front right wheel counter
+ |-------------------------------------- 31. Front left wheel counter
 
  The String params encoding is as follows:
  0000 0000 0000 0000 0000 0000 0000 0000
