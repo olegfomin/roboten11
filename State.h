@@ -159,28 +159,19 @@ class State {
 
     Lever* LCDMenuPosition( ); // intParam(8) 
  
-    bool isLeftRearLight(); 
-    Lever* leftRearLight( );  // intParam(9) - frequency of blinks (0- steady, 1 - long blinks (750/500) 2 - fast blinks (300/200) 
-    bool isRightRearLight();
-    Lever* rightRearLight( ); // intParam(10) - frequency of blinks
-    bool isRightFrontLight();
-    Lever* rightFrontLight( ); // intParam(11) - frequency of blinks
-    bool isLeftFrontLight();
-    Lever* leftFrontLight( ); // intParam(12) - frequency of blinks  
+    Lever* leftRearLight( );  
+    Lever* rightRearLight( ); 
+    Lever* rightFrontLight( ); 
+    Lever* leftFrontLight( );   
 
     Lever* leftFrontSonar( ); // intParam(13) - distance from obstacle in mm or negative value if no obstacle is detected    
     Lever* middleFrontSonar( ); // intParam(14) - distance from obstacle in mm or negative value if no obstacle is detected
     Lever* rightFrontSonar( ); // intParam(15) - distance from obstacle in mm or negative value if no obstacle is detected
     
-    bool     isRPIRelayEngaged();
     Lever* RPIRelayOn( ); // intParam(20)
-    bool     isSelfPowerRelay();
     Lever* selfPowerRelay( ); // intParam(21)
-    bool     isMotorRelayEngaged();
     Lever* engageMotorsRelay( ); // intParam(22)
-    bool     isSpeakersRelayEngaged;
     Lever* engageSpeakersRelay( ); // intParam(23)
-    bool     isRelay5Engaged(); 
     Lever* relay5( ); // intParam(24)
     
     Lever* leftRearWheelCounter( ); // intParam(24) the number of wheel revolutions (tuned 60 degrees) so number/6 is really number of revolutions 
@@ -188,7 +179,7 @@ class State {
     Lever* rightFrontWheelCounter( ); // intParam(26) the number of wheel revolutions (tuned 60 degrees) so number/6 is really number of revolutions
     Lever* leftFrontWheelCounter( ); // intParam(27) the number of wheel revolutions (tuned 60 degrees) so number/6 is really number of revolutions
 
-    Lever* print2OnRpiScreen(); // StrParam[3], StrParam[4], StrParam[5]
+    Lever* print2OnRpiScreen(); // StrParam1, StrParam2
     
     void arduinoLoop(); // Should be called in the Arduino's loop body
     unsigned int getNIncrementTick();

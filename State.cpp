@@ -6,7 +6,7 @@
 
 State::State() {
   
-//  leverNparamsArray[0] = new LeverNparams(Lever* lever, int index2IntParams, int lengthOfIntParams);
+//  leverNparamsArray[0] = new LeverNparams(Lever* lever, int index2IntParams, int lengsthOfIntParams);
     
 //    leverNparamsArray[15]
   
