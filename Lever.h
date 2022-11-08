@@ -23,6 +23,7 @@ class Lever {
     unsigned int commitedOnMillis=0; // when the record was commited 
     unsigned int expiresInMillis=INT_MAX; // how many millis it has to stay valid from now (different from createdOn)!
     unsigned int expiresOnMillis=INT_MAX; // commitedOnMillis + expiresInMillis  
+    unsigned int now; // being called from arduinoLoop() once for every iteration
 
     int  iterationNumber= 0;
     bool isCommitedFlag = false;
@@ -57,7 +58,7 @@ class Lever {
     unsigned int getTick(); // Tick gets assigned immediatelly after Lever got generated and it stays the same throughout the commit 
     void commit(unsigned int expiresInMillis, Listener* listener); // Execute Lever now. Anything negative as a param is considered to be never expires. Returns Listener that gets triggered on completion
     void cancel(); // being constantly called in a loop from the State and in the very beginning during commit
-    virtual void arduinoLoop(); // being constantly called in a loop from the State
+    virtual bool arduinoLoop(); // being constantly called in a loop from the State
     virtual void arduinoSetup(); // being called once during setting the pin modes up from the State
 
 };
@@ -76,26 +77,29 @@ class TumblerSwitchLever : public Lever {
 
 /* Automatically switches on and off periodically. The time it stays ON defined by Param1 and it stays OFF defined by Param2 */
 class BlinkSwitchLever : public TumblerSwitchLever {
+  private:
+    bool state = false; // false - off/ true - On
+    unsigned int nextStateChangeMillis=0;
+
+  public: 
     BlinkSwitchLever(unsigned int tick,
                      uint64_t     bitMask,
                      unsigned int pinNumberOut,
                      unsigned int pinNumberIn,
-                     unsigned int stayOnMillis,
-                     unsigned int stayOffMillis);
-    void setStayOnMillis(unsigned stayOnMillis); // Alias for Param1
-    unsigned int getStayOnMillis();
-    void setStayOffMillis(unsigned stayOffMillis); // Alias for Param2
-    unsigned int getStayOffMillis();                
+                     int          stayOnMillis,
+                     int          stayOffMillis);
+    void setStayOnMillis(int stayOnMillis); // Alias for Param1
+    int getStayOnMillis();
+    void setStayOffMillis(int stayOffMillis); // Alias for Param2
+    int getStayOffMillis();                
+    virtual bool arduinoLoop(); // being constantly called in a loop from the State
 };
 
 /* Controls left rear LED blinking frequency you can also making stay on by setting the setStayOnMillis(MAX_INT) */
 class LeftRearLightLever : public Lever {
   private:
-    bool state = false; // false - off/ true - On
-    unsigned int nextStateChangeMillis=0;
   public:
-    LeftRearLightLever(unsigned int tick);    
-    virtual void arduinoLoop(); // being constantly called in a loop from the State
+    LeftRearLightLever(unsigned int tick); 
 };
 
 

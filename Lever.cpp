@@ -78,14 +78,15 @@ void Lever::arduinoSetup() {
   if(pinNumberIn != INT_MAX) pinMode(pinNumberIn, INPUT);
 };
 
-void Lever::arduinoLoop() {
-  unsigned int now = millis();
+bool Lever::arduinoLoop() { // If true then the client should continue calling the loop otherwise it should stop 
+  now = millis();
   isCompleteFlag = (now>=expiresOnMillis);
   if(isCompleteFlag) {
     listener->onEvent(0, "", "");
-    return;
+    return false;
   }
   iterationNumber++;
+  return true;
 };
 
 /****************************************************************************************************************************************************************/
@@ -105,15 +106,40 @@ void TumblerSwitchLever::switchOff(Listener* listener) {
 
 
 /*****************************************************************************************************************************************************************/
-BlinkSwitchLever::BlinkSwitchLever(unsigned int tick, uint64_t bitMask, unsigned int  pinNumberOut, unsigned int  pinNumberIn, unsigned int stayOnMillis, unsigned int stayOffMillis) : TumblerSwitchLever(tick, bitMask, pinNumberOut, pinNumberIn) {
+BlinkSwitchLever::BlinkSwitchLever(unsigned int tick, uint64_t bitMask, unsigned int  pinNumberOut, unsigned int  pinNumberIn, int stayOnMillis, int stayOffMillis) : TumblerSwitchLever(tick, bitMask, pinNumberOut, pinNumberIn) {
 };
+
+void BlinkSwitchLever::setStayOnMillis(int stayOnMillis) { // Alias for Param1
+  this->setIntParam1(stayOnMillis);
+}
+int BlinkSwitchLever::getStayOnMillis() {
+  return this->getIntParam1();
+}
+void BlinkSwitchLever::setStayOffMillis(int stayOffMillis) { // Alias for Param2
+   this->setIntParam2(stayOffMillis);
+};
+int BlinkSwitchLever::getStayOffMillis() {
+   this->getIntParam2();
+};
+bool BlinkSwitchLever::arduinoLoop() {
+  if(!Lever::arduinoLoop()) return false;
+  if(now > nextStateChangeMillis) {
+    int period = INT_MAX;
+    if(state) { // if true it means that currently it is ON so we have to switch it off
+      switchOff(listener);
+      period = getStayOffMillis();
+    } else { // if false it means that currently it is OFF so we have to switch it on
+      switchOn(listener);
+      period = getStayOnMillis();
+    }
+    nextStateChangeMillis = now + period; // Calculating next time when we have to swap the state
+  }
+  return true;
+  
+};                
+/********************************************************************************************************************************************************************/
 
 
 LeftRearLightLever::LeftRearLightLever(unsigned int tick) : Lever(tick, BIT12, 52, 0) {
   this->tick = tick;
-};
-
-void LeftRearLightLever::arduinoLoop() {
-  Lever::arduinoLoop();
-  
 };
