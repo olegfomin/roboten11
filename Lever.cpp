@@ -5,11 +5,9 @@
 Lever::Lever() {
 };
 
-Lever::Lever(unsigned int  tick,
-             uint64_t      bitMask,
+Lever::Lever(uint64_t      bitMask,
              unsigned int  pinNumberOut,
              unsigned int  pinNumberIn) {
-  this->tick       = tick;
   this->bitMask   = bitMask;  
   this->pinNumberOut = pinNumberOut;
   this->pinNumberIn = pinNumberIn;
@@ -55,8 +53,9 @@ unsigned int Lever::getPinNumberIn() {
   return this->pinNumberIn;
 };
 
-void Lever::commit(unsigned int expiresInMillis, Listener* listener) {
+void Lever::commit(unsigned int expiresInMillis, Listener* listener, unsigned int tickNumber) {
   isCompleteFlag = false;
+  this->tick = tickNumber;
   this->expiresInMillis = expiresInMillis;
   this->commitedOnMillis = millis();
   this->expiresOnMillis = this->commitedOnMillis+expiresInMillis; 
@@ -90,7 +89,7 @@ bool Lever::arduinoLoop() { // If true then the client should continue calling t
 };
 
 /****************************************************************************************************************************************************************/
-TumblerSwitchLever::TumblerSwitchLever(unsigned int tick, uint64_t bitMask, unsigned int  pinNumberOut, unsigned int  pinNumberIn) : Lever(tick, bitMask, pinNumberOut, pinNumberIn) {
+TumblerSwitchLever::TumblerSwitchLever(uint64_t bitMask, unsigned int  pinNumberOut, unsigned int  pinNumberIn) : Lever(bitMask, pinNumberOut, pinNumberIn) {
   
 };
 
@@ -106,7 +105,7 @@ void TumblerSwitchLever::switchOff(Listener* listener) {
 
 
 /*****************************************************************************************************************************************************************/
-BlinkSwitchLever::BlinkSwitchLever(unsigned int tick, uint64_t bitMask, unsigned int  pinNumberOut, unsigned int  pinNumberIn, int stayOnMillis, int stayOffMillis) : TumblerSwitchLever(tick, bitMask, pinNumberOut, pinNumberIn) {
+BlinkSwitchLever::BlinkSwitchLever(uint64_t bitMask, unsigned int  pinNumberOut, unsigned int  pinNumberIn, int stayOnMillis, int stayOffMillis) : TumblerSwitchLever(bitMask, pinNumberOut, pinNumberIn) {
 };
 
 void BlinkSwitchLever::setStayOnMillis(int stayOnMillis) { // Alias for Param1
@@ -137,9 +136,20 @@ bool BlinkSwitchLever::arduinoLoop() {
   return true;
   
 };                
+
 /********************************************************************************************************************************************************************/
+LeftRearLightLever::LeftRearLightLever() : BlinkSwitchLever(BIT12, 52, INT_MAX, 500, 350) {
+  this->tick = tick;
+};
 
+RightRearLightLever::RightRearLightLever() : BlinkSwitchLever(BIT13, 49, INT_MAX, 500, 350) {
+  this->tick = tick;
+};
 
-LeftRearLightLever::LeftRearLightLever(unsigned int tick) : Lever(tick, BIT12, 52, 0) {
+RightFrontLightLever::RightFrontLightLever() : BlinkSwitchLever(BIT14, 51, INT_MAX, 500, 350) {
+  this->tick = tick;
+};
+
+LeftFrontLightLever::LeftFrontLightLever() : BlinkSwitchLever(BIT15, 50, INT_MAX, 500, 350) {
   this->tick = tick;
 };

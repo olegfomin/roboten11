@@ -5,8 +5,9 @@
 #include <Arduino.h>
 
 State::State() {
-  
-//  leverNparamsArray[0] = new LeverNparams(Lever* lever, int index2IntParams, int lengsthOfIntParams);
+
+  LeftRearLightLever* leftRearLightLever = new LeftRearLightLever();
+//  leverNparamsArray[12] = new LeverNparams(leftRearLightLever, 10, 2); TODO implement LeverNparamss
     
 //    leverNparamsArray[15]
   

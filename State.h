@@ -49,10 +49,10 @@ class LeverNparams {
                                        | |||| |||| |||| |||| |||| ||------------  10. LCD 16x2 print strString[0], strString[1]
                                        | |||| |||| |||| |||| |||| |-------------  11. Current small screen menu position
                                        | |||| |||| |||| |||| ||||
-                                       | |||| |||| |||| |||| ||||--------------- 12. Left Rear light ON (intParam1 - blinking mode see description below, int param2 - number of blinks remaining)
-                                       | |||| |||| |||| |||| |||---------------- 13. Right Rear light ON (intParam1 - blinking mode see description below, int param2 - number of blinks remaining)
-                                       | |||| |||| |||| |||| ||----------------- 14. Right Front light ON (intParam1 - blinking mode see description below, int param2 - number of blinks remaining)
-                                       | |||| |||| |||| |||| |------------------ 15. Left Front light ON (intParam1 - blinking mode see description below, int param2 - number of blinks remaining)
+                                       | |||| |||| |||| |||| ||||--------------- 12. Left Rear light ON 
+                                       | |||| |||| |||| |||| |||---------------- 13. Right Rear light ON 
+                                       | |||| |||| |||| |||| ||----------------- 14. Right Front light ON
+                                       | |||| |||| |||| |||| |------------------ 15. Left Front light ON 
                                        | |||| |||| |||| ||||
                                        | |||| |||| |||| ||||-------------------- 16. Light Mode 0 - steady, 1 - blink
                                        | |||| |||| |||| |||--------------------- 17. Left Front Sonar signal - intParam[9] 
@@ -64,9 +64,9 @@ class LeverNparams {
                                        | |||| |||| ||--------------------------- 22. RPI Power relay
                                        | |||| |||| |---------------------------- 23. Own Self Powered relay 
                                        | |||| ||||
-                                       | |||| ||||------------------------------ 24. Relay 3
-                                       | |||| |||------------------------------- 25, Relay 4
-                                       | |||| ||-------------------------------- 26. Relay 5
+                                       | |||| ||||------------------------------ 24. Motor power relay
+                                       | |||| |||------------------------------- 25, Speaker Power relay
+                                       | |||| ||-------------------------------- 26. Relay 5 (Reserved)
                                        | |||| |--------------------------------- 27. Left rear wheel counter intParam[14]
                                        | ||||
                                        | ||||----------------------------------- 28. Right rear wheel counter intParam[15]

@@ -46,17 +46,17 @@ class Lever {
 
   public:  
     Lever();
-    Lever(unsigned int tick,
-          uint64_t     bitMask,
+    Lever(uint64_t     bitMask,
           unsigned int pinNumberOut,
           unsigned int pinNumberIn);
 
     bool isCommited();
     bool isComplete();
     bool isCancelled();
-     
-    unsigned int getTick(); // Tick gets assigned immediatelly after Lever got generated and it stays the same throughout the commit 
-    void commit(unsigned int expiresInMillis, Listener* listener); // Execute Lever now. Anything negative as a param is considered to be never expires. Returns Listener that gets triggered on completion
+
+    unsigned int getTick(); // Tick gets assigned immediatelly after Lever got commited and it stays the same throughout the commit 
+
+    void commit(unsigned int expiresInMillis, Listener* listener, unsigned int tickNumber); // Execute Lever now. Anything negative as a param is considered to be never expires. Returns Listener that gets triggered on completion. Tick number is a unique counter being incremented on each commit
     void cancel(); // being constantly called in a loop from the State and in the very beginning during commit
     virtual bool arduinoLoop(); // being constantly called in a loop from the State
     virtual void arduinoSetup(); // being called once during setting the pin modes up from the State
@@ -67,8 +67,7 @@ class TumblerSwitchLever : public Lever {
   protected:
     bool state = false;
   public:
-    TumblerSwitchLever(unsigned int tick,
-                       uint64_t     bitMask,
+    TumblerSwitchLever(uint64_t     bitMask,
                        unsigned int pinNumberOut,
                        unsigned int pinNumberIn);
     void switchOn(Listener* listener);
@@ -82,8 +81,7 @@ class BlinkSwitchLever : public TumblerSwitchLever {
     unsigned int nextStateChangeMillis=0;
 
   public: 
-    BlinkSwitchLever(unsigned int tick,
-                     uint64_t     bitMask,
+    BlinkSwitchLever(uint64_t     bitMask,
                      unsigned int pinNumberOut,
                      unsigned int pinNumberIn,
                      int          stayOnMillis,
@@ -95,12 +93,34 @@ class BlinkSwitchLever : public TumblerSwitchLever {
     virtual bool arduinoLoop(); // being constantly called in a loop from the State
 };
 
-/* Controls left rear LED blinking frequency you can also making stay on by setting the setStayOnMillis(MAX_INT) */
-class LeftRearLightLever : public Lever {
+/* Controls left rear LED blinking frequency you can also making stay on all the time by setting the setStayOnMillis(MAX_INT) */
+class LeftRearLightLever : public BlinkSwitchLever {
   private:
   public:
-    LeftRearLightLever(unsigned int tick); 
+    LeftRearLightLever(); 
 };
+
+/* Controls right rear LED blinking frequency you can also making stay on all the time by setting the setStayOnMillis(MAX_INT) */
+class RightRearLightLever : public BlinkSwitchLever {
+  private:
+  public:
+    RightRearLightLever(); 
+};
+
+/* Controls right front LED blinking frequency you can also making stay on all the time by setting the setStayOnMillis(MAX_INT) */
+class RightFrontLightLever : public BlinkSwitchLever {
+  private:
+  public:
+    RightFrontLightLever(); 
+};
+
+/* Controls left front LED blinking frequency you can also making stay on all the time by setting the setStayOnMillis(MAX_INT) */
+class LeftFrontLightLever : public BlinkSwitchLever {
+  private:
+  public:
+    LeftFrontLightLever(); 
+};
+
 
 
 #endif
