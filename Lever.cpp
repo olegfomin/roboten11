@@ -1,6 +1,8 @@
 #include "Lever.h" 
 #include <limits.h>
 
+#include "ExecutionQueue.h"
+
 // Redundant constructor but without this method the Lever cmd[64] array is imposible to form 
 Lever::Lever() {
 };

@@ -14,15 +14,14 @@ class LeverNparams {
   private:
     Lever* lever; // Lever currently being executed
     int index2IntParams; // if this value is negative no integer params are expected otherwise it is an index in intParam update where the parameters for this device are stored
-    int length2IntParams; // length of params in the intParam array
+    int lengthOfIntParams; // length of params in the intParam array
     int index2StrParams; // if this value is negative string params are expected otherwise it is an index in strParam update where the parameters for this device are stored
-    int length2StrParams; // length of params in the strParam array
+    int lengthOfStrParams; // length of params in the strParam array
 
   public:
     LeverNparams(Lever* lever, int index2IntParams, int lengthOfIntParams, int index2StrParams, int lengthOfStrParams);
-    LeverNparams(Lever* lever, int index2IntParams, int lengthOfIntParams);
-    LeverNparams(Lever* lever, String index2StrParams, int lengthOfStrParams);
     
+    Lever* getLever();
     int getIndex2IntParams();
     int getLength2IntParams();
     int getIndex2StrParams();
@@ -110,7 +109,7 @@ class LeverNparams {
  |||| ||||------------------------------ 24. Self powered relay creates an alternative circuit to power Arduino
  |||| |||------------------------------- 25, Motor power relay
  |||| ||-------------------------------- 26. Speaker Power relay
- |||| |--------------------------------- 27. Relay 5 (reserved)
+ |||| |--------------------------------- 27. Reserved Relay (possibly connected to RPi if this SBC wants to halt the motors without going through Arduino in case the Arduino does not respond?)
  ||||
  ||||----------------------------------- 28. Left rear wheel counter
  |||------------------------------------ 29. Right rear wheel counter
@@ -125,11 +124,64 @@ class LeverNparams {
                                     ||---- the line that is sent to RPi in order to be printed on a big LCD screen (blue color)
                                     |----- the line that is sent to RPi in order to be printed on a big LCD screen (red color)
 
-*/ 
+LED to PIN Map:
+/*************/
+/*   ------  */
+/*   |    |  */
+/*   |    |  */
+/*   |    |  */
+/*   |    |  */ 
+/*   52---   */
+
+/*   ------  */
+/*   |    |  */
+/*   |    |  */
+/*   |    |  */
+/*   |    |  */ 
+/*   ----49  */
+
+/*   -----51 */
+/*   |    |  */
+/*   |    |  */
+/*   |    |  */
+/*   |    |  */ 
+/*   ------  */
+
+/*  50-----  */
+/*   |    |  */
+/*   |    |  */
+/*   |    |  */
+/*   |    |  */ 
+/*   ------  */
+
+/* Relay to PIN Map: 
+-------------
+|\^^^^^^^^^ |\
+| \^^^^^^^^^||\
+|R2\ ^^^^^^^|||\
+| R3\-------||||-
+|w   |bottom|||||0
+| a  |bottom|||||
+|  l |bottom|||||
+|R1 l|bottom|||||
+|    |bottom|||||
+\------------\|||
+ \transparent \||
+  \^^R5^^R4^^^^\|
+   \^^^^wall^^^^\0
+     ^ ^    ^ ^
+     | |    | | 
+
+
+Relay R5 - Connected to PIN #8
+Relay R4 - Connected to PIN #7
+Relay R1 - Connected to PIN #6  
+Relay R2 - Connected to PIN #5  
+
+*/
 
 class State {
   private:
-    static const int Lever_INDEX_SQUIZZ_THRESHOLD = 55;
     unsigned int tick = 0;
     LeverNparams* leverNparamsArray[64]= {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
                                               NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
@@ -138,10 +190,6 @@ class State {
     int             intParam[64] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     String          strParam[5] = {"", "", "", "", ""}; 
     // Serves as an execution queue that is fully traversed on every Arduino loop() iteration 
-    Lever*        leverExecutionArray[64]={NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
-                                              NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL}; 
-    int             leverIndex=0; // execution queue index as soon as the index goes above threshold then the squizz procedure is engaged that would move all the active Lever to the left 
-    int squizz(); // Goes through LeverArray if the Lever index >= threshold and verifies all completed Levers. If the Lever is complete then deleting it from array and memory if not then try to move it to the left as much as possible 
     
   public:
     State();
@@ -181,7 +229,6 @@ class State {
 
     Lever* print2OnRpiScreen(); // StrParam1, StrParam2
     
-    void arduinoLoop(); // Should be called in the Arduino's loop body
     unsigned int getNIncrementTick();
     String toString();
 

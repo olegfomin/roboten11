@@ -4,21 +4,42 @@
 #include "State.h"
 #include <Arduino.h>
 
+LeverNparams::LeverNparams(Lever* lever, int index2IntParams, int lengthOfIntParams, int index2StrParams, int lengthOfStrParams) {
+  this->lever = lever;
+  this->index2IntParams = index2IntParams;
+  this->lengthOfIntParams = lengthOfIntParams;
+  this->index2StrParams = index2StrParams;
+  this->lengthOfStrParams = lengthOfStrParams;
+};
+Lever* LeverNparams::getLever() {
+  return this->lever;
+};
+int LeverNparams::getIndex2IntParams() {
+  return this->index2IntParams;
+};
+int LeverNparams::getLength2IntParams() {
+  return this->lengthOfIntParams;
+};
+int LeverNparams::getIndex2StrParams() {
+  return this->index2StrParams;
+};
+int LeverNparams::getLength2StrParams() {
+  return this->lengthOfStrParams;
+};
+
 State::State() {
-
   LeftRearLightLever* leftRearLightLever = new LeftRearLightLever();
-//  leverNparamsArray[12] = new LeverNparams(leftRearLightLever, 10, 2); TODO implement LeverNparamss
-    
-//    leverNparamsArray[15]
-  
+  leverNparamsArray[12] = new LeverNparams(leftRearLightLever, 10, 2, 0, 0);
+  leftRearLightLever->setStayOnMillis(intParam[10]);
+  leftRearLightLever->setStayOffMillis(intParam[11]);
 
+  
 };
 
 void State::arduinoSetup() {
-  pinMode(LEFT_REAR_LED, OUTPUT);
-  pinMode(RIGHT_REAR_LED, OUTPUT);
-  pinMode(RIGHT_FRONT_LED, OUTPUT);
-  pinMode(LEFT_FRONT_LED, OUTPUT); 
+  for(int i=0; i<64; i++) {
+    if(leverNparamsArray[i] != NULL) leverNparamsArray[i]->getLever()->arduinoSetup();
+  }
 };
 
 
@@ -27,36 +48,6 @@ unsigned int State::getNIncrementTick() {
 }
 
 Lever* State::leftRearLight() {
-//   if(LeverNparamsArray[11] != NULL) return LeverStorageArray[11];
- /*  uint64_t bit12 = BIT12;
-   uint64_t bit9 = BIT9;
-   Lever* lever = new Lever(getNIncrementTick(), &bit12, &bit9, NULL, intParam, strParam); 
-   leverExecutionArray[leverIndex] = lever;
-   return lever; */
+ if(leverNparamsArray[12] != NULL) return leverNparamsArray[12]->getLever();
+ else return NULL;
 };
-
-void State::arduinoLoop() {
-  if(leverIndex > Lever_INDEX_SQUIZZ_THRESHOLD) {
-    leverIndex = squizz();
-  }
-  for(int i=0; i<leverIndex; i++) {
-    Lever* lever = leverExecutionArray[i];
-    if(lever->isCommited()) {
-      lever->arduinoLoop();
-    } else if(lever->isComplete()) {
-      
-    }
-  }
-}
-
-int State::squizz() {
-  int newIndex=0;
-  for(int i=0; i<leverIndex; i++) {
-    Lever* lever = leverExecutionArray[i];
-    if(!lever->isComplete()) {
-       leverExecutionArray[newIndex] = leverExecutionArray[i];
-       newIndex++;
-    }
-  }  
-  return newIndex;
-}

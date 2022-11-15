@@ -1,6 +1,8 @@
 #include "State.h"
+#include "ExecutionQueue.h"
 
 State* state;
+ExecutionQueue* executionQueue; 
 
 void setup() {
   state = new State();
@@ -8,6 +10,6 @@ void setup() {
 }
 
 void loop() {
-  state->arduinoLoop();
+  executionQueue->arduinoLoop();
 
 }
